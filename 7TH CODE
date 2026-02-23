@@ -1,0 +1,28 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_curve, auc
+from sklearn.preprocessing import label_binarize
+
+iris = load_iris()
+X = iris.data
+y = iris.target
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+depths = [1, 2, 3]
+
+for d in depths:
+    clf = DecisionTreeClassifier(max_depth=d, random_state=42)
+    clf.fit(X_train, y_train)
+
+    train_acc = accuracy_score(y_train, clf.predict(X_train))
+    test_acc = accuracy_score(y_test, clf.predict(X_test))
+
+    print(f"Max Depth: {d}")
+    print(f"Training Accuracy: {train_acc:.2f}")
+    print(f"Test Accuracy: {test_acc:.2f}\n")
